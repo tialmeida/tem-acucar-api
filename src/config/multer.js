@@ -9,7 +9,7 @@ export default {
             filename: (req, file, cb) => {
                 crypto.randomBytes(16, (error, res) => {
                     return cb(null, res.toString('hex') + extname(file.originalname);
-                });
+                })
             }
         })
     }

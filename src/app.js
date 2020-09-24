@@ -5,26 +5,26 @@ import routes from './routes';
 import './database';
 
 class App {
-    constructor() {
-        this.server = express();
-        this.middlewares();
-        this.routes();
-        //exceptionHandler
-    }
+  constructor() {
+    this.server = express();
+    this.middlewares();
+    this.routes();
+    // exceptionHandler
+  }
 
-    middlewares() {
-        this.server.use(express.json());
-        this.server.use('/files', express.static(path.resolve(
-            __dirname,
-            '..',
-            'uploads',
-            'avatars'
-        )))
-    }
+  middlewares() {
+    this.server.use(express.json());
+    this.server.use('/files', express.static(path.resolve(
+      __dirname,
+      '..',
+      'uploads',
+      'avatars',
+    )));
+  }
 
-    routes() {
-        //this.server.use(routes);
-    }
+  routes() {
+    // this.server.use(routes);
+  }
 }
 
-export default new App().server
+export default new App().server;
