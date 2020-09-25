@@ -2,7 +2,7 @@ import Favor from "../models/Favor";
 import Resident from "../models/Resident";
 import YupFavor from '../../validations/YupFavor';
 
-class FavorsController {
+class CategoryController {
     async create(req, res){
         if(!(await YupFavor.store.isValid(req.body))){
             return res.status(400).send();
@@ -89,4 +89,4 @@ class FavorsController {
     }
 }
 
-export default new FavorsController;
+export default new CategoryController;

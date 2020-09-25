@@ -51,7 +51,7 @@ class ResidentsController {
     }
 
     async update(req, res){
-        const {id} = req.body;
+        const {id} = req.params;
         const resident = await Resident.findByPk(id);
         resident.password_hash = undefined;
 

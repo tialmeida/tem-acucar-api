@@ -12,7 +12,7 @@ class AceptedFavorsController {
             return res.status(406).send();
         }
         
-        await favors.update({ state: 'em andamento' },{
+        await favors.update({ state: 'em andamento', id_volunteer: req.id_resident },{
             where: {id}
         })
 
@@ -27,7 +27,7 @@ class AceptedFavorsController {
 
         const resident = await resident.findByPk(req.id_resident);
         
-        const {id_building} = req.params;
+        const {id_building} = resident;
         
         const favors = await resident.findAll({
             where: {
@@ -45,14 +45,14 @@ class AceptedFavorsController {
             return res.status(400).send();
         }
 
-        const {id} = req.body;
+        const {id} = req.params;
         const favors = await Favors.findByPk(id);
         
         if(!favors){
             return res.status(406).send();
         }
 
-        await favors.update({ state: "em aberto" },{
+        await favors.update({ state: "em aberto", id_volunteer: null },{
             where: {id}
         })
         

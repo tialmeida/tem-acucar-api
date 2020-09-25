@@ -21,7 +21,7 @@ routes.delete('/buildings/:id', BuilduingsController.delete);
 // Residents
 routes.get('/residents', ResidentsController.index);
 routes.get('/residents/all', ResidentsController.list);
-routes.put('/residents', ResidentsController.update);
+routes.put('/residents/:id', ResidentsController.update);
 
 // Favors
 routes.post('/favors', FavorsController.create);
