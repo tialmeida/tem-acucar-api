@@ -16,6 +16,10 @@ module.exports = {
         key: 'id',
       },
     },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     ap_number: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -39,10 +43,12 @@ module.exports = {
     admin: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
+      defaultValue: false
     },
     active: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
+      defaultValue: false
     },
     updated_at: {
       type: Sequelize.DATE,

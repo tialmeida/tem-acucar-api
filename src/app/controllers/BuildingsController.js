@@ -1,5 +1,6 @@
 import Building from '../models/Building';
 import YupBuilding from '../../validations/YupBuilding';
+import Residents from '../models/Resident';
 
 class BuildingsController {
     async create(req, res){
@@ -7,16 +8,19 @@ class BuildingsController {
             return res.status(400).send();
         }
 
-        const building = await Building.create(req.body)
+        const building = await Building.create(req.body);
+        const {id} = building;
+        const {ap_number, name, nickname, password, phone} = req.body.resident;
+        await Residents.create({id_building: id, ap_number, name, nickname, password, phone, admin: true});
 
         return res.json(building);
     }
 
     async update(req, res){
         const building = await Building.findByPk(req.params.id);
-        building.active = true
-        await building.update()
-        return res.json(building)
+        building.active = true;
+        await building.update();
+        return res.json(building);
     }
     
     async delete(req, res){

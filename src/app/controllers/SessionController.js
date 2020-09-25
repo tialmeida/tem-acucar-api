@@ -19,6 +19,7 @@ class SessionController {
         }
 
         resident.password_hash = undefined
+        const {id} = resident;
 
         return res.json({
             resident,

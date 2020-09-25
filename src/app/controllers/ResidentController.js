@@ -13,24 +13,16 @@ class ResidentsController {
     }
 
     async index(req, res){
-        if(!(await YupResident.list.isValid(req.params))){
-            return res.status(400).send();
-        }
-
         const resident = await Resident.findByPk(req.id_resident);
         resident.password_hash = undefined
         return res.json(resident);
     }
     
-    async list(req, res){
-        if(!(await YupResident.list.isValid(req.params))){
-            return res.status(400).send();
-        }
-        
+    async list(req, res){       
         const resident = await Resident.findByPk(req.id_resident);
         resident.password_hash = undefined;
         
-        const {id_building} = req.params;
+        const {id_building} = resident;
         
         if(resident.admin){
             const residents = await Resident.findAll({
@@ -42,6 +34,7 @@ class ResidentsController {
                 },
                 
             });
+            return res.json(residents);
         }
         else {
             const residents = await Resident.findAll({
@@ -53,17 +46,11 @@ class ResidentsController {
                     active: true,
                 }
             });
+            return res.json(residents);
         }
-
-        return res.json(residents);
-        
     }
 
     async update(req, res){
-        if(!(await YupResident.update.isValid(req.body))){
-            return res.status(400).send();
-        }
-        
         const {id} = req.body;
         const resident = await Resident.findByPk(id);
         resident.password_hash = undefined;
@@ -72,8 +59,7 @@ class ResidentsController {
             return res.status(406).send();
         }
 
-        const {ap_number, name, nickname, phone} = req.body;
-        await resident.update({ap_number, name, nickname, phone},{
+        await resident.update(req.body,{
             where: {id}
         })
         
