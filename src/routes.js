@@ -19,17 +19,18 @@ routes.delete('/buildings/:id', BuilduingsController.delete);
 routes.get('/residents', ResidentsController.index);
 routes.get('/residents/all', ResidentsController.list);
 routes.post('/residents', ResidentsController.create);
-routes.update('/residents', ResidentsController.update);
+routes.put('/residents', ResidentsController.update);
 
 // Favors
 routes.post('/favors', FavorsController.create);
+routes.put('/favors', FavorsController.update);
 routes.get('/favors', FavorsController.list);
 routes.get('/favors/:id', FavorsController.index);
-routes.delete('/favors/:id', FavorsController.delete);
 
 // Notifications
 routes.get('/notifications', NotificationController.list)
 routes.get('/notifications/:id', NotificationController.delete)
 
+console.log('carregado');
 
 export default routes;

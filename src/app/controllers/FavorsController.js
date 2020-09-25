@@ -1,7 +1,7 @@
 import Resident from "../models/Resident";
 import YupResident from '../../validations/YupResident';
 
-class ResidentsController {
+class FavorsController {
     async create(req, res){
         if(!(await YupResident.store.isValid(req.body))){
             return res.status(400).send();
@@ -63,6 +63,26 @@ class ResidentsController {
         
         return res.json(resident)
     }
+
+    async delete(req, res){
+        
+        if(!(await YupFavor.delete.isValid(req.body))){
+            return res.status(400).send();
+        }
+
+        const {id} = req.body;
+        const favors = await Favors.findByPk(id);
+        
+        if(!favors){
+            return res.status(406).send();
+        }
+
+        await favors.update({ state: "finalizado" },{
+            where: {id}
+        })
+        
+        return res.json(favors)
+    }
 }
 
-export default new ResidentsController;
+export default new FavorsController;

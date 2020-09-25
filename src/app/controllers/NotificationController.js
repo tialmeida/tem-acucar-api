@@ -1,4 +1,4 @@
-import Notification from '../schemas';
+import Notification from '../schemas/Notification';
 
 class NotificationsController {
     async create(title, content, id_user) {
@@ -12,7 +12,7 @@ class NotificationsController {
 
     async list(req, res) {
         const notifications = await Notification.find({
-            id_user: req.resident_id,
+            id_user: req.id_resident,
             read: false
         })
 

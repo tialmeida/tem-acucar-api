@@ -1,7 +1,8 @@
+import Resident from "../models/Resident";
 import Favors from "../models/Favor";
 import YupFavor from '../../validations/YupFavor'
 
-class FavorsController {
+class AceptedFavorsController {
     async create(req, res){
 
         const {id} = req.body;
@@ -51,7 +52,7 @@ class FavorsController {
             return res.status(406).send();
         }
 
-        await favors.update({ state: "finalizado" },{
+        await favors.update({ state: "em aberto" },{
             where: {id}
         })
         
@@ -59,4 +60,4 @@ class FavorsController {
     }
 }
 
-export default new FavorsController;
+export default new AceptedFavorsController;
