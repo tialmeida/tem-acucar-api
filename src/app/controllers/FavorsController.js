@@ -11,16 +11,16 @@ class FavorsController {
 
         const user = await Resident.findByPk(req.id_resident)
 
-        const favor = await Favor.create(req.body);
+        const favor = await Favor.create({...req.body, id_creator: req.id_resident});
 
         const residents = await Resident.findAll({
-            where: { id_building  },
+            where: { id_building: req.body.id_building},
             active: true
         })
 
         residents.forEach(async (resident) => {
             await Notification.create({
-                title: `"Ajude seu vizinho ${user.name[0]}`,
+                title: `"Ajude seu vizinho ${user.name.split(' ')[0]}`,
                 content: req.body.title,
                 id_user: resident.id
             })
@@ -31,15 +31,14 @@ class FavorsController {
 
     async index(req, res){
         const favor = await Favor.findByPk(req.params.id);
+        if(!favor){
+            return res.status(404).send();
+        }
         return res.json(favor)
     }
     
     async list(req, res){
-        if(!(await YupFavor.list.isValid(req.params))){
-            return res.status(400).send();
-        }
-        
-        const resident = await resident.findByPk(req.id_resident);
+        const resident = await Resident.findByPk(req.id_resident);
         
         const {id_building} = resident;
         
@@ -76,22 +75,21 @@ class FavorsController {
             return res.status(406).send();
         }
 
-        const {id_category, final_date, titulo, descricao} = req.body;
-        await resident.update({id_category, state, final_date, titulo, descricao},{
+        await favor.update(req.body,{
             where: {id}
         })
         
-        return res.json(resident)
+        return res.json(favor)
     }
 
     async delete(req, res){
         
-        if(!(await YupFavor.delete.isValid(req.body))){
+        if(!(await YupFavor.delete.isValid(req.params))){
             return res.status(400).send();
         }
 
-        const {id} = req.body;
-        const favors = await Favors.findByPk(id);
+        const {id} = req.params;
+        const favors = await Favor.findByPk(id);
         
         if(!favors){
             return res.status(406).send();

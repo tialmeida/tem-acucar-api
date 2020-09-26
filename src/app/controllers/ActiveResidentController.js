@@ -7,8 +7,8 @@ class ActiveResidentController {
             return res.status(400).send();
         }
 
-        const {id_resident_admin} = req;
-        const resident_admin = await Resident.findByPk(id_resident_admin);
+        const {id_resident} = req;
+        const resident_admin = await Resident.findByPk(id_resident);
 
         if(!resident_admin){
             return res.status(400).send();
@@ -17,15 +17,16 @@ class ActiveResidentController {
         if(!resident_admin.admin){
             return res.status(401).send();
         }
-        const {id_resident, active} = req.body;
-        const resident = await Resident.findByPk(id_resident);
+        const {active} = req.body;
+        const id = req.body.id_resident;
+        const resident = await Resident.findByPk(id);
 
         if(!resident){
             return res.status(406).send();
         }
 
         resident.active = active;
-        await resident.update();
+        await resident.save();
         return res.send();
     }
 }

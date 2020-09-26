@@ -9,11 +9,9 @@ export default async(req, res, next) => {
 
     const [, token] = authHeader.split(' ');
 
-    try{
-        if(token == process.env.SUPERADMIN_KEY)
+    if(token == process.env.SUPERADMIN_KEY){
         return next();
-    } catch(error) {
+    }else{
         return res.status(401).send({error: "Apenas moderadores podem fazer isso"});
-
     }
 }

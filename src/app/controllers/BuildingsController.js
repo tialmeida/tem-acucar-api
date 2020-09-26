@@ -14,7 +14,7 @@ class BuildingsController {
         const {ap_number, name, nickname, password, phone} = req.body.resident;
         const resident = await Residents.create({id_building: id, ap_number, name, nickname, password, phone, admin: true});
         building.id_owner = resident.id;
-        await building.update();
+        await building.save();
 
         if(req.file){
             await FileController.store(req.file.filename, resident.id);
@@ -25,13 +25,19 @@ class BuildingsController {
 
     async update(req, res){
         const building = await Building.findByPk(req.params.id);
+        if(!building){
+            return res.status(400).send();
+        }
         building.active = true;
 
-        const owner = await Resident.findByPk(building.id_owner)
-        owner.ative = true
+        const owner = await Residents.findByPk(building.id_owner)
+        if(!owner){
+            return res.status(400).send();
+        }
+        owner.active = true
 
-        await building.update();
-        await owner.update();
+        await building.save();
+        await owner.save();
 
         return res.json(building);
     }

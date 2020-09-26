@@ -9,6 +9,8 @@ class ResidentsController {
             return res.status(400).send();
         }
 
+        const {id_building} = req.body;
+
         const isBuildActive = await Building.findByPk(id_building, {
             where: {active: true}
         })
@@ -21,11 +23,12 @@ class ResidentsController {
         resident.password_hash = undefined;
         
         if(req.file){
+            console.log(req.file);
             await FileController.store(req.file.filename, resident.id);
         }
 
         return res.json(resident);
-    }e
+    }
 
     async index(req, res){
         const resident = await Resident.findByPk(req.id_resident);

@@ -16,20 +16,15 @@ class AceptedFavorsController {
             where: {id}
         })
 
-        return res.json(favor);
+        return res.json(favors);
     }
     
     async list(req, res){
-        
-        if(!(await YupFavor.list.isValid(req.body))){
-            return res.status(400).send();
-        }
-
-        const resident = await resident.findByPk(req.id_resident);
+        const resident = await Resident.findByPk(req.id_resident);
         
         const {id_building} = resident;
         
-        const favors = await resident.findAll({
+        const favors = await Favors.findAll({
             where: {
                 id_building,
                 id_volunteer: req.id_resident 
@@ -41,7 +36,7 @@ class AceptedFavorsController {
     
     async delete(req, res){
         
-        if(!(await YupFavor.delete.isValid(req.body))){
+        if(!(await YupFavor.delete.isValid(req.params))){
             return res.status(400).send();
         }
 

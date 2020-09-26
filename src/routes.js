@@ -9,11 +9,12 @@ import FileController from './app/controllers/FileController'
 import ActiveResidentController from './app/controllers/ActiveResidentController'
 import authMiddleware from './app/middlewares/auth';
 import superUserMiddleware from './app/middlewares/superUser';
+import ownerMiddleware from './app/middlewares/owner';
 
-import {avatar} from './config/multer';
+import multerConfig from './config/multer';
 import multer from 'multer';
 
-const upload_avatar = multer(avatar);
+const upload_avatar = multer(multerConfig.avatar);
 
 const routes = new Router();
 
@@ -22,7 +23,6 @@ routes.post('/residents', upload_avatar.single('avatar'), ResidentsController.cr
 routes.post('/login', SessionController.create);
 
 routes.put('/buildings/:id', superUserMiddleware, BuilduingsController.update);
-routes.put('/residents/actives', superUserMiddleware, ActiveResidentController.update);
 
 routes.use(authMiddleware)
 
@@ -34,8 +34,9 @@ routes.delete('/buildings/:id', BuilduingsController.delete);
 routes.get('/residents', ResidentsController.index);
 routes.get('/residents/all', ResidentsController.list);
 routes.put('/residents/:id', ResidentsController.update);
-routes.put('/residents/photos', upload_avatar.single('avatar') ,FileController.update);
-routes.delete('/residents/photos', FileController.delete);
+routes.put('/actives/residents', ownerMiddleware, ActiveResidentController.update);
+routes.put('/photos/residents', upload_avatar.single('avatar') ,FileController.update);
+routes.delete('/photos/residents', FileController.delete);
 
 // Favores
 
@@ -47,9 +48,8 @@ routes.delete('/favors/:id', FavorsController.delete);
 
 // Aceitar favores
 routes.post('/favors/accept/:id', AcceptedFavorsController.create);
-routes.get('/favors/my', AcceptedFavorsController.list);
-routes.delete('/favors/giveup/:id', AcceptedFavorsController.delete);
-
+routes.get('/my/favors', AcceptedFavorsController.list);
+routes.delete('/my/favors/giveup/:id', AcceptedFavorsController.delete);
 
 // Notifications
 routes.get('/notifications', NotificationController.list)
