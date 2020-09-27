@@ -14,7 +14,7 @@ class Seals extends Model {
   }
 
   static associate(models) {
-    this.belongsToMany(models.Residents, {foreignKey: 'id_seal', through: 'seals_residents'});
+    this.belongsToMany(models.Residents, { foreignKey: 'id_seal', through: 'seals_residents' });
   }
 }
 export default Seals;

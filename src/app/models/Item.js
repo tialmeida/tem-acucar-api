@@ -2,11 +2,14 @@ import Sequelize, { Model } from 'sequelize';
 
 class Itens extends Model {
   static init(sequelize) {
-    super.init({
-      category: Sequelize.STRING,
-    }, {
-      sequelize,
-    });
+    super.init(
+      {
+        item: Sequelize.STRING,
+      },
+      {
+        sequelize,
+      },
+    );
 
     return this;
   }

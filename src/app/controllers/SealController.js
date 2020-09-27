@@ -2,19 +2,19 @@ import Seals from '../models/Seal';
 import Resident from '../models/Resident';
 import YupBadge from '../../validations/YupBadge';
 
-class SealsController{
-    async create(req, res){
-        if(!(await YupBadge.store.isValid(req.body))){
-            return res.status(400).send();
-        }
-        const {title, description, icon} = req.body;
-        const seal = await Seals.create({title, description, icon});
-
-        return res.send(seal);
+class SealsController {
+  async create(req, res) {
+    if (!(await YupBadge.store.isValid(req.body))) {
+      return res.status(400).send();
     }
+    const { title, description, icon } = req.body;
+    const seal = await Seals.create({ title, description, icon });
 
-    async add(req, res){
-        /*if(!(await YupBadge.add.isValid(req.body))){
+    return res.send(seal);
+  }
+
+  async add(req, res) {
+    /* if(!(await YupBadge.add.isValid(req.body))){
             return res.status(400).send();
         }
 
@@ -29,8 +29,8 @@ class SealsController{
 
         await resident.addSeals(seal);
 
-        return res.send();*/
-    }
+        return res.send(); */
+  }
 }
 
-export default new SealsController;
+export default new SealsController();

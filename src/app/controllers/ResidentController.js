@@ -1,96 +1,106 @@
-import Resident from "../models/Resident";
-import Building from "../models/Building";
+/* eslint-disable class-methods-use-this */
+import Resident from '../models/Resident';
+import Building from '../models/Building';
 import YupResident from '../../validations/YupResident';
-    import FileController from './FileController';
- 
+import FileController from './FileController';
+
 class ResidentsController {
-    async create(req, res){
-        if(!(await YupResident.store.isValid(req.body))){
-            return res.status(400).send();
-        }
-
-        const {id_building} = req.body;
-
-        const isBuildActive = await Building.findByPk(id_building, {
-            where: {active: true}
-        })
-
-        if(!isBuildActive) {
-            return res.json({error: "O cadastro deste prédio ainda não foi aprovado"})
-        }
-
-        const resident = await Resident.create(req.body);
-        resident.password_hash = undefined;
-        
-        if(req.file){
-            console.log(req.file);
-            await FileController.store(req.file.filename, resident.id);
-        }
-
-        return res.json(resident);
+  async create(req, res) {
+    if (!(await YupResident.store.isValid(req.body))) {
+      return res.status(400).send();
     }
 
-    async index(req, res){
-        const resident = await Resident.findByPk(req.id_resident);
-        resident.password_hash = undefined
-        return res.json(resident);
-    }
-    
-    async list(req, res){       
-        const resident = await Resident.findByPk(req.id_resident);
-        resident.password_hash = undefined;
-        
-        const {id_building} = resident;
-        
-        if(resident.admin){
-            const residents = await Resident.findAll({
-                attributes: { 
-                    exclude: ['password_hash'] 
-                },
-                where: {
-                    id_building,
-                },
-                include: {
-                    association: 'building',
-                    attributes: ['name', 'address']
-                }
-                
-            });
-            return res.json(residents);
-        }
-        else {
-            const residents = await Resident.findAll({
-                attributes: { 
-                    exclude: ['password_hash'] 
-                },
-                where: {
-                    id_building,
-                    active: true,
-                }
-            });
-            return res.json(residents);
-        }
+    const { id_building } = req.body;
+
+    const isBuildActive = await Building.findByPk(id_building, {
+      where: { active: true },
+    });
+
+    if (!isBuildActive) {
+      return res.json({
+        error: 'O cadastro deste prédio ainda não foi aprovado',
+      });
     }
 
-    async update(req, res){
-        const {id} = req.params;
-        const resident = await Resident.findByPk(id);
-        if(!resident) {
-            return res.status(404).send({error: "Usuário não encontrado"});
-       }
-       
-        resident.password_hash = undefined;
+    const residentExists = await Resident.findOne({
+      where: { nickname: req.body.nickname },
+    });
 
-        if(!resident){
-            return res.status(406).send();
-        }
-
-        await resident.update(req.body,{
-            where: {id}
-        })
-        
-        return res.json(resident)
+    if (residentExists) {
+      return res.json({
+        error: 'Já existe um usuário com este nickname',
+      });
     }
+
+    const resident = await Resident.create(req.body);
+    resident.password_hash = undefined;
+
+    if (req.file) {
+      await FileController.store(req.file.filename, resident.id);
+    }
+
+    return res.json(resident);
+  }
+
+  async index(req, res) {
+    const resident = await Resident.findByPk(req.id_resident);
+    resident.password_hash = undefined;
+    return res.json(resident);
+  }
+
+  async list(req, res) {
+    const resident = await Resident.findByPk(req.id_resident);
+    resident.password_hash = undefined;
+
+    const { id_building } = resident;
+
+    if (resident.admin) {
+      const residents = await Resident.findAll({
+        attributes: {
+          exclude: ['password_hash'],
+        },
+        where: {
+          id_building,
+        },
+        include: {
+          association: 'building',
+          attributes: ['name', 'address'],
+        },
+      });
+      return res.json(residents);
+    }
+
+    const residents = await Resident.findAll({
+      attributes: {
+        exclude: ['password_hash'],
+      },
+      where: {
+        id_building,
+        active: true,
+      },
+    });
+    return res.json(residents);
+  }
+
+  async update(req, res) {
+    const { id } = req.params;
+    const resident = await Resident.findByPk(id);
+    if (!resident) {
+      return res.status(404).send({ error: 'Usuário não encontrado' });
+    }
+
+    resident.password_hash = undefined;
+
+    if (!resident) {
+      return res.status(406).send();
+    }
+
+    await resident.update(req.body, {
+      where: { id },
+    });
+
+    return res.json(resident);
+  }
 }
 
-export default new ResidentsController;
+export default new ResidentsController();

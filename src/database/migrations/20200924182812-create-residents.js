@@ -31,7 +31,6 @@ module.exports = {
     nickname: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true
     },
     password_hash: {
       type: Sequelize.STRING,
@@ -44,12 +43,12 @@ module.exports = {
     admin: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
-      defaultValue: false
+      defaultValue: false,
     },
     active: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
-      defaultValue: false
+      defaultValue: false,
     },
     updated_at: {
       type: Sequelize.DATE,
