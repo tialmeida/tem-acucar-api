@@ -43,13 +43,21 @@ class ResidentsController {
   }
 
   async index(req, res) {
-    const resident = await Resident.findByPk(req.id_resident);
+    const resident = await Resident.findByPk(req.id_resident, {
+      include: {
+        association: 'stamps'
+      }
+    });
     resident.password_hash = undefined;
     return res.json(resident);
   }
 
   async list(req, res) {
-    const resident = await Resident.findByPk(req.id_resident);
+    const resident = await Resident.findByPk(req.id_resident, {
+      include: {
+        association: 'stamps'
+      }
+    });
     resident.password_hash = undefined;
 
     const { id_building } = resident;

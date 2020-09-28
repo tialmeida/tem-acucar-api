@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Seals extends Model {
+class Stamps extends Model {
   static init(sequelize) {
     super.init({
       title: Sequelize.STRING,
@@ -17,4 +17,4 @@ class Seals extends Model {
     this.belongsToMany(models.Residents, { foreignKey: 'id_seal', through: 'seals_residents' });
   }
 }
-export default Seals;
+export default Stamps;

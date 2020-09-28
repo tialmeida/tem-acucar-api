@@ -13,10 +13,8 @@ class CategoryController {
     }
     
     async list(req, res){
-        
         const category = await Category.findAll();
         return res.json(category);
-        
     }
 
     async update(req, res){
@@ -25,18 +23,18 @@ class CategoryController {
         }
 
         const {id} = req.params;
-        const category = await Category.findByPk(id);
+        const category_bd = await Category.findByPk(id);
         
-        if(!category){
+        if(!category_bd){
             return res.status(406).send();
         }
 
         const {category} = req.body;
-        await resident.update({category},{
+        await category_bd.update({category},{
             where: {id}
         })
         
-        return res.json(resident)
+        return res.json(category_bd)
     }
 
     async delete(req, res){

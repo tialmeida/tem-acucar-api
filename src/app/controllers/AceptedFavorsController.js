@@ -2,6 +2,7 @@ import Resident from '../models/Resident';
 import Favors from '../models/Favor';
 import YupFavor from '../../validations/YupFavor';
 import Notification from '../schemas/Notification';
+import SealController from './SealController';
 
 class AceptedFavorsController {
   async create(req, res) {
@@ -12,9 +13,7 @@ class AceptedFavorsController {
       return res.status(406).send();
     }
 
-    await favors.update(
-      { state: 'em andamento', id_volunteer: req.id_resident },
-      {
+    await favors.update({ state: 'em andamento', id_volunteer: req.id_resident },{
         where: { id },
       },
     );
@@ -24,7 +23,10 @@ class AceptedFavorsController {
     await Notification.create({
       title: `${user.name.split(' ')[0]} está disposto a te ajudar!`,
       id_user: favors.id_creator,
+      content: 'aa'
     });
+
+    await SealController.add(req.id_resident);
 
     return res.json(favors);
   }

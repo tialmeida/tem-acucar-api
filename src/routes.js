@@ -2,6 +2,8 @@ import { Router } from 'express';
 import multer from 'multer';
 import BuilduingsController from './app/controllers/BuildingsController';
 import ResidentsController from './app/controllers/ResidentController';
+import CategoryController from './app/controllers/CategoryController';
+import SealController from './app/controllers/SealController';
 import FavorsController from './app/controllers/FavorsController';
 import AcceptedFavorsController from './app/controllers/AceptedFavorsController';
 import NotificationController from './app/controllers/NotificationController';
@@ -25,6 +27,14 @@ routes.post('/login', SessionController.create);
 
 routes.put('/buildings/:id', superUserMiddleware, BuilduingsController.update);
 
+//Seals
+routes.post('/seals', superUserMiddleware, SealController.create);
+
+//Category
+routes.post('/categories', superUserMiddleware, CategoryController.create);
+routes.put('/categories', superUserMiddleware, CategoryController.update);
+routes.delete('/categories', superUserMiddleware, CategoryController.delete);
+
 routes.use(authMiddleware);
 
 // Building
@@ -40,10 +50,10 @@ routes.put('/photos/residents', upload_avatar.single('avatar'), FileController.u
 routes.delete('/photos/residents', FileController.delete);
 
 // Favores
-
 routes.post('/favors', FavorsController.create);
 routes.get('/favors', FavorsController.list);
 routes.get('/favors/:id', FavorsController.index);
+routes.get('/my/favors', FavorsController.listMyFavors);
 routes.put('/favors/:id', FavorsController.update);
 routes.delete('/favors/:id', FavorsController.delete);
 
@@ -57,6 +67,9 @@ routes.post('/items/:idFavor', FavorsItemsController.create);
 routes.get('/items/:idFavor', FavorsItemsController.list);
 routes.put('/items/:idItem', FavorsItemsController.update);
 routes.delete('/items/:idItem', FavorsItemsController.delete);
+
+//Categories
+routes.get('/cetegories', CategoryController.list);
 
 // Notifications
 routes.get('/notifications', NotificationController.list);

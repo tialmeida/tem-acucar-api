@@ -3,6 +3,7 @@ import Resident from '../models/Resident';
 import Notification from '../schemas/Notification';
 import YupFavor from '../../validations/YupFavor';
 import Itens from '../models/Item';
+import Favors from '../models/Favor';
 
 class FavorsController {
   async create(req, res) {
@@ -80,6 +81,14 @@ class FavorsController {
       }],
     });
     return res.json(favor);
+  }
+
+  async listMyFavors(req, res){
+    const favors = await Favors.findAll({
+      where:{id_creator: req.id_resident}
+    });
+
+    return res.send(favors);
   }
 
   async update(req, res) {

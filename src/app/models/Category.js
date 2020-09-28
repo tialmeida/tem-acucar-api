@@ -11,9 +11,9 @@ class Categories extends Model {
     return this;
   }
 
-  /* static associate(models){
-
-    } */
+    static associate(models){
+      this.belongsTo(models.Stamps, {foreignKey: 'id_stamp', as: 'stamp'});
+    } 
 }
 
 export default Categories;

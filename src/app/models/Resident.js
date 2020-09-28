@@ -28,7 +28,7 @@ class Residents extends Model {
 
   static associate(models) {
     this.belongsTo(models.Buildings, { foreignKey: 'id_building', as: 'building' });
-    this.belongsToMany(models.Seals, { foreignKey: 'id_resident', through: 'seals_residents' });
+    this.belongsToMany(models.Stamps, { foreignKey: 'id_resident', through: 'seals_residents', as: 'stamps'});
   }
 
   checkPassword(password) {

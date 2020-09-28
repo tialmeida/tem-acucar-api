@@ -1,36 +1,56 @@
 import Seals from '../models/Seal';
-import Resident from '../models/Resident';
+import Favors from '../models/Favor';
 import YupBadge from '../../validations/YupBadge';
+import Category from '../models/Category';
+import Residents from '../models/Resident';
 
-class SealsController {
-  async create(req, res) {
-    if (!(await YupBadge.store.isValid(req.body))) {
-      return res.status(400).send();
-    }
-    const { title, description, icon } = req.body;
-    const seal = await Seals.create({ title, description, icon });
+class SealsController{
+    /*async index(req, res){
+        const resident = await Residents.findByPk(req.id_resident,{
+            attributes: {
+                exclude: ['password_hash']
+            },
+            include: {
+                association: 'stamps'
+            }
+        });
+        return res.send(resident);
+    }*/
 
-    return res.send(seal);
-  }
-
-  async add(req, res) {
-    /* if(!(await YupBadge.add.isValid(req.body))){
+    async create(req, res){
+        if(!(await YupBadge.store.isValid(req.body))){
             return res.status(400).send();
         }
+        const {title, description, icon} = req.body;
+        const seal = await Seals.create({title, description, icon});
 
-        const {id_resident, id_seal} = req.body;
+        return res.send(seal);
+    }
 
-        const resident = await Resident.findByPk(id_resident);
-        const seal = await Seals.findByPk(id_seal);
-
-        if(!resident || !seal){
-            return res.status(406).send();
+    async add(id){
+        const categories = await Category.findAll();
+        for(let i in categories){
+            const category = categories[i].category;
+            const count = await Favors.count({
+                where: {
+                    id_volunteer: id,
+                },
+                include: {
+                    association: "category",
+                    required: true,
+                    where: {category}
+                }
+            });
+            
+            if(count == 1){
+                const resident = await Residents.findByPk(id);
+                const seal = await Seals.findByPk(categories[i].id_stamp);
+                await resident.addStamps(seal);
+            }
         }
 
-        await resident.addSeals(seal);
+    }
 
-        return res.send(); */
-  }
 }
 
-export default new SealsController();
+export default new SealsController;
