@@ -8,7 +8,6 @@ const NotificationSchema = new mongoose.Schema({
 
   content: {
     type: String,
-    required: true,
   },
 
   id_user: {
