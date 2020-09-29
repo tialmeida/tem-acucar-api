@@ -69,7 +69,7 @@ routes.put('/items/:idItem', FavorsItemsController.update);
 routes.delete('/items/:idItem', FavorsItemsController.delete);
 
 //Categories
-routes.get('/cetegories', CategoryController.list);
+routes.get('/categories', CategoryController.list);
 
 // Notifications
 routes.get('/notifications', NotificationController.list);
