@@ -59,7 +59,7 @@ routes.delete('/favors/:id', FavorsController.delete);
 
 // Aceitar favores
 routes.post('/favors/accept/:id', AcceptedFavorsController.create);
-routes.get('/my/favors', AcceptedFavorsController.list);
+routes.get('/my/favors/accept', AcceptedFavorsController.list);
 routes.delete('/my/favors/giveup/:id', AcceptedFavorsController.delete);
 
 // Items
