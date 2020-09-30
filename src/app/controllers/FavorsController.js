@@ -70,7 +70,7 @@ class FavorsController {
     const favor = await Favor.findAll({
       where: {
         id_building,
-        state: 'em aberto',
+        state: 'Em aberto',
       },
 
     }, {
