@@ -13,7 +13,7 @@ class AceptedFavorsController {
       return res.status(406).send();
     }
 
-    await favors.update({ state: 'em andamento', id_volunteer: req.id_resident },{
+    await favors.update({ state: 'Em andamento', id_volunteer: req.id_resident },{
         where: { id },
       },
     );
